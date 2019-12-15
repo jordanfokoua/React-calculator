@@ -52,6 +52,6 @@ const Button = ({ value, onClick, type }) => {
 
 const isOperator = val => !isNaN(val) || val === ",";
 
-const isAction = val => val === "C" || val === "+/-" || val === "%";
+const isAction = val => val === "AC" || val === "+/-" || val === "%";
 
 export default Button;
