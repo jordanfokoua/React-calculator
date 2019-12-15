@@ -177,10 +177,16 @@ class Calculator extends React.Component {
   };
 
   calculate = value => {
+    const lastChar = value.toString().charAt(value.length - 1);
+    // Check if last char is a number before calculating
+    if (isNaN(lastChar)) return null;
+
     // Replace x by multiplicator operator
     if (value.includes("x")) value = value.replace("x", "*");
+
     const displayInput = math.evaluate(value).toString();
-    this.setState(state => ({ ...state, displayInput }));
+
+    return this.setState(state => ({ ...state, displayInput }));
   };
 }
 
