@@ -27,12 +27,14 @@ class Calculator extends React.Component {
     this.state = {
       rows: [
         ["C", "+/-", "%", "/"],
-        ["7", "8", "9", "X"],
+        ["7", "8", "9", "x"],
         ["4", "5", "6", "-"],
         ["1", "2", "3", "+"],
         ["0", ".", "="]
       ],
-      displayInput: 0
+      displayInput: 0,
+      hiddenInput: 0, // This will be used to manage operations in the background
+      operate: true
     };
   }
 
@@ -58,43 +60,94 @@ class Calculator extends React.Component {
     );
   }
 
+  /* Check if button is an Action */
+  isAction = value => {
+    if (value === "C" || value === "+/-" || value === "%") return true;
+    return false;
+  };
+
+  /* Check if button is an operator */
+  isOperator = value => {
+    if (value === "/" || value === "+" || value === "-" || value === "x")
+      return true;
+    return false;
+  };
+
   onClick = value => {
+    /* Check if button is a Number then setState */
     if (!isNaN(value) || value === ".")
       return this.setState(state => ({
         ...state,
         displayInput:
-          state.displayInput === 0 ? value : state.displayInput + value
+          state.displayInput === 0 ? value : state.displayInput + value,
+        hiddenInput: state.hiddenInput === 0 ? value : state.hiddenInput + value
       }));
 
-    if (value === "C" || value === "+/-" || value === "%")
-      return this.onClickAction(value);
+    /* Check if button is an Action then call onClickAction */
+    if (this.isAction(value)) return this.onClickAction(value);
+
+    /* if button is neither an action or a number, then it's an operator */
     return this.onClickOperator(value);
   };
 
   onClickOperator = value => {
-    console.log("TCL: onClickOperator -> value", value);
+    const { displayInput } = this.state;
+    const lastChar = displayInput.toString().charAt(displayInput.length - 1);
+
+    /*
+     * If display input is 0, no operator can be applied.
+     * We simply return null (no action made)
+     */
+
+    if (displayInput === 0) return null;
+
+    /* Check if last char in string is an operator
+     * If it is an operator, we replace it by the new operator
+     */
+    if (this.isOperator(lastChar)) {
+      return this.setState(state => ({
+        ...state,
+        displayInput:
+          state.displayInput === 0
+            ? value
+            : displayInput.toString().slice(0, -1) + value,
+        hiddenInput:
+          state.hiddenInput === 0
+            ? value
+            : displayInput.toString().slice(0, -1) + value
+      }));
+    }
+
+    return this.setState(state => ({
+      ...state,
+      displayInput:
+        state.displayInput === 0 ? value : state.displayInput + value,
+      hiddenInput: state.hiddenInput === 0 ? value : state.hiddenInput + value
+    }));
   };
 
   onClickAction = value => {
     switch (value) {
-      case "C":
+      case "C": // Clear action
         this.setState(state => ({
           ...state,
-          displayInput: 0
+          displayInput: 0,
+          hiddenInput: 0
         }));
         break;
-        
-      case "+/-":
-        this.setState(state => ({
-          ...state,
-          displayInput: state.displayInput * -1
-        }));
+
+      case "+/-": // Negate action
+        if (isNaN(value))
+          this.setState(state => ({
+            ...state,
+            displayInput: state.displayInput * -1,
+            hiddenInput: state.displayInput * -1
+          }));
         break;
 
       default:
         break;
     }
-    console.log("TCL: onClickAction -> value", value);
   };
 }
 
