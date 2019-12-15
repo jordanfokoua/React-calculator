@@ -1,5 +1,7 @@
 import React from "react";
+
 import Button from "./shared/Button";
+import Display from "./shared/Display";
 
 const calculatorStyle = {
   display: "flex",
@@ -11,7 +13,7 @@ const calculatorStyle = {
 
 const wrapperStyle = {
   height: "400px",
-  width: "600px"
+  width: "25em"
 };
 
 const rowStyle = {
@@ -28,18 +30,20 @@ class Calculator extends React.Component {
         ["7", "8", "9", "X"],
         ["4", "5", "6", "-"],
         ["1", "2", "3", "+"],
-        ["0", ",", "="]
-      ]
+        ["0", ".", "="]
+      ],
+      displayInput: 0
     };
   }
 
   render() {
-    const { rows } = this.state;
+    const { rows, displayInput } = this.state;
     return (
       <div style={calculatorStyle}>
         <div style={wrapperStyle}>
+          <Display input={displayInput} />
           {rows.map((row, i) => (
-            <div style={rowStyle}>
+            <div key={i} style={rowStyle}>
               {row.map((input, j) => (
                 <Button
                   key={`${i}-${j}`}
@@ -54,8 +58,43 @@ class Calculator extends React.Component {
     );
   }
 
-  onClick = () => {
-    console.log("Pressed");
+  onClick = value => {
+    if (!isNaN(value) || value === ".")
+      return this.setState(state => ({
+        ...state,
+        displayInput:
+          state.displayInput === 0 ? value : state.displayInput + value
+      }));
+
+    if (value === "C" || value === "+/-" || value === "%")
+      return this.onClickAction(value);
+    return this.onClickOperator(value);
+  };
+
+  onClickOperator = value => {
+    console.log("TCL: onClickOperator -> value", value);
+  };
+
+  onClickAction = value => {
+    switch (value) {
+      case "C":
+        this.setState(state => ({
+          ...state,
+          displayInput: 0
+        }));
+        break;
+        
+      case "+/-":
+        this.setState(state => ({
+          ...state,
+          displayInput: state.displayInput * -1
+        }));
+        break;
+
+      default:
+        break;
+    }
+    console.log("TCL: onClickAction -> value", value);
   };
 }
 
