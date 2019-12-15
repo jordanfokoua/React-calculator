@@ -1,5 +1,9 @@
 import React from "react";
 
+// Library import
+import * as math from "mathjs";
+
+// Component import
 import Button from "./shared/Button";
 import Display from "./shared/Display";
 
@@ -68,7 +72,13 @@ class Calculator extends React.Component {
 
   /* Check if button is an operator */
   isOperator = value => {
-    if (value === "/" || value === "+" || value === "-" || value === "x")
+    if (
+      value === "/" ||
+      value === "+" ||
+      value === "-" ||
+      value === "x" ||
+      value === "="
+    )
       return true;
     return false;
   };
@@ -100,6 +110,13 @@ class Calculator extends React.Component {
      */
 
     if (displayInput === 0) return null;
+
+    /* Check if the pressed button is the equal operator
+     * If it is an equal operator, we calculate the operation
+     */
+    if (value === "=") {
+      return this.calculate(displayInput);
+    }
 
     /* Check if last char in string is an operator
      * If it is an operator, we replace it by the new operator
@@ -140,14 +157,30 @@ class Calculator extends React.Component {
         if (isNaN(value))
           this.setState(state => ({
             ...state,
-            displayInput: state.displayInput * -1,
-            hiddenInput: state.displayInput * -1
+            displayInput: (state.displayInput * -1).toString(),
+            hiddenInput: (state.displayInput * -1).toString()
+          }));
+        break;
+
+      case "%":
+        if (isNaN(value))
+          this.setState(state => ({
+            ...state,
+            displayInput: (state.displayInput / 100).toString(),
+            hiddenInput: (state.displayInput / 100).toString()
           }));
         break;
 
       default:
         break;
     }
+  };
+
+  calculate = value => {
+    // Replace x by multiplicator operator
+    if (value.includes("x")) value = value.replace("x", "*");
+    const displayInput = math.evaluate(value).toString();
+    this.setState(state => ({ ...state, displayInput }));
   };
 }
 
