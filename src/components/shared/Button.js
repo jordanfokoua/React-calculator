@@ -37,6 +37,7 @@ const operatorButton = {
 const Button = ({ value, onClick, type }) => {
   return (
     <div
+      onClick={() => onClick(value)}
       style={
         isOperator(value)
           ? numberButton
@@ -50,8 +51,8 @@ const Button = ({ value, onClick, type }) => {
   );
 };
 
-const isOperator = val => !isNaN(val) || val === ",";
+const isOperator = val => !isNaN(val) || val === ".";
 
-const isAction = val => val === "AC" || val === "+/-" || val === "%";
+const isAction = val => val === "C" || val === "+/-" || val === "%";
 
 export default Button;
