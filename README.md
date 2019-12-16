@@ -2,8 +2,9 @@
 
 This a simple calculator made with React Js based on the iOS 13 calculator
 
-## Installation
+![preview](https://github.com/blvck237/React-calculator/tree/master/public/preview.png)
 
+## Installation
 
 ```bash
 npm install
@@ -16,9 +17,11 @@ npm start
 ```
 
 ## Dependencies
+
 [MathJs](https://mathjs.org/)
 
 ## Contributing
+
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
