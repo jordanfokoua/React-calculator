@@ -9,20 +9,32 @@ import Display from "./shared/Display";
 
 const calculatorStyle = {
   display: "flex",
+  flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
+  width: "100%",
   height: "100vh",
-  width: "100%"
+  lineHeight: "6em",
+  background: "#000"
 };
 
 const wrapperStyle = {
-  height: "400px",
-  width: "25em"
+  width: "20em",
+  border: "0.85px solid #303030",
+  background: "#000",
+  padding: "0.5em"
 };
 
 const rowStyle = {
   display: "flex",
   width: "100%"
+};
+
+const headerStyle = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  color: "#fff"
 };
 
 class Calculator extends React.Component {
@@ -46,6 +58,9 @@ class Calculator extends React.Component {
     const { rows, displayInput } = this.state;
     return (
       <div style={calculatorStyle}>
+        <div>
+          <h1 style={headerStyle}>iOS 13 Calculator</h1>
+        </div>
         <div style={wrapperStyle}>
           <Display input={displayInput} />
           {rows.map((row, i) => (

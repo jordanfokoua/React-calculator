@@ -8,8 +8,7 @@ const displayStyle = {
   justifyContent: "flex-end",
   alignItems: "flex-end",
   fontSize: "3em",
-  padding: "0 10px 10px 0",
-  outline: "1px solid #888"
+  padding: "0 10px 0 0",
 };
 
 const Display = ({ input }) => {
