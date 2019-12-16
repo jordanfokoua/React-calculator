@@ -2,7 +2,7 @@
 
 This a simple calculator made with React Js based on the iOS 13 calculator
 
-![preview](https://github.com/blvck237/React-calculator/tree/master/public/preview.png)
+![preview](https://github.com/blvck237/React-calculator/blob/master/public/preview.png?raw=true)
 
 ## Installation
 
